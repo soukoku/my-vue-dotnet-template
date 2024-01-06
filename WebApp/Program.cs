@@ -11,7 +11,14 @@ namespace WebApp
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<ViteBuildManifest>();
-            builder.Services.AddAntiforgery();
+            builder.Services.AddAntiforgery(op =>
+            {
+                // enable this if need to be hosted in external iframes
+                //op.SuppressXFrameOptionsHeader = true;
+
+                op.HeaderName = "X-CSRF-TOKEN";
+                op.FormFieldName = "csrf-token";
+            });
 
             var app = builder.Build();
 
