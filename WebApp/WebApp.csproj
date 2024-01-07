@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Soukoku.AspNetCore.ViteIntegration" Version="1.0.0-alpha11" />
+    <PackageReference Include="Soukoku.AspNetCore.ViteIntegration" Version="1.0.0-alpha12" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
