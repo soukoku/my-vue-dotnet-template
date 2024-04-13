@@ -1,28 +1,18 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig, splitVendorChunkPlugin } from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import fs from 'fs'
 import path from 'path'
 import child_process from 'child_process'
+import pkg from './package.json' assert { type: 'json' }
 
 const baseFolder =
   process.env.APPDATA !== undefined && process.env.APPDATA !== ''
     ? `${process.env.APPDATA}/ASP.NET/https`
     : `${process.env.HOME}/.aspnet/https`
 
-const certificateArg = process.argv
-  .map((arg) => arg.match(/--name=(?<value>.+)/i))
-  .filter(Boolean)[0]
-const certificateName = certificateArg?.groups?.value || 'vueapp1.client'
-
-if (!certificateName) {
-  console.error(
-    'Invalid certificate name. Run this script in the context of an npm/yarn script or pass --name=<<app>> explicitly.'
-  )
-  process.exit(-1)
-}
-
+const certificateName = pkg.name || 'vueapp.client'
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`)
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`)
 
@@ -31,7 +21,7 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     0 !==
     child_process.spawnSync(
       'dotnet',
-      ['dev-certs', 'https', '--export-path', certFilePath, '--format', 'Pem', '--no-password'],
+      ['dev-certs', 'https', '--export-path', certFilePath, '--format', 'Pem', '--no-password', '--trust'],
       { stdio: 'inherit' }
     ).status
   ) {
@@ -41,7 +31,7 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), splitVendorChunkPlugin()],
+  plugins: [vue()],
   server: {
     https: {
       key: fs.readFileSync(keyFilePath),
@@ -58,7 +48,18 @@ export default defineConfig({
     manifest: true,
     rollupOptions: {
       // specify all the custom entry pages
-      input: ['src/entry-pages/home.ts']
+      input: ['src/entry-pages/home.ts'],
+      output: {
+        manualChunks: (id: string) => {
+          if (id.includes('a-very-large-dependency')) {
+            return 'big-chungus'
+          }
+
+          if (id.includes('node_modules')) {
+            return 'vendors'
+          }
+        }
+      }
     }
   }
 })
