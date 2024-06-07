@@ -37,7 +37,8 @@ export default defineConfig({
       key: fs.readFileSync(keyFilePath),
       cert: fs.readFileSync(certFilePath)
     },
-    port: 3000
+    port: 3000,
+    hmr: { host: 'localhost', clientPort: 3000 }
   },
   resolve: {
     alias: {
@@ -46,6 +47,8 @@ export default defineConfig({
   },
   build: {
     manifest: true,
+    // outDir: '../app/',
+    // emptyOutDir: true,
     rollupOptions: {
       // specify all the custom entry pages
       input: ['src/entry-pages/home.ts'],
