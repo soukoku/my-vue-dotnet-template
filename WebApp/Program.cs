@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.ResponseCompression;
 using Soukoku.AspNetCore.ViteIntegration;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WebApp
 {
@@ -9,7 +12,11 @@ namespace WebApp
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                .AddJsonOptions(op =>
+                {
+                    op.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+                });
             builder.Services.AddSingleton<ViteBuildManifest>();
             builder.Services.AddAntiforgery(op =>
             {
@@ -20,7 +27,27 @@ namespace WebApp
                 op.FormFieldName = "csrf-token";
             });
 
+            builder.Services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(["image/svg+xml"]);
+            });
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(op =>
+            {
+                var xmlDocFile = Path.Combine(AppContext.BaseDirectory, $"{nameof(WebApp)}.xml");
+                if (File.Exists(xmlDocFile))
+                {
+                    op.IncludeXmlComments(xmlDocFile);
+                }
+            });
+
             var app = builder.Build();
+            app.UseResponseCompression();
+            app.UseSwagger();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

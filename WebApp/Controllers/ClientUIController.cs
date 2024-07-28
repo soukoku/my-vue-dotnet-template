@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Soukoku.AspNetCore.ViteIntegration;
+using System.Diagnostics;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
     /// <summary>
     /// Controller for serving ClientUI. Each method should be for an entry page
-    /// in ClientUI.
+    /// in ClientUI as different area of the app.
     /// </summary>
     public class ClientUIController : Controller
     {
@@ -17,6 +19,7 @@ namespace WebApp.Controllers
         }
 
         // park the entry page under the same-name root so it's easier to find them.
+        // you might have a landing page area, actual app area, admin area, etc.
 
         [HttpGet("home/{**slug}")]
         public IActionResult Home(string? slug = null)
@@ -29,6 +32,35 @@ namespace WebApp.Controllers
                 {
                     Message = $"This initial message is from aspnet with slug {slug}"
                 }
+            };
+            return View("VuePage", model);
+        }
+
+
+        [HttpGet("admin/{**slug}")]
+        public IActionResult Admin(string? slug = null)
+        {
+            var model = new VitePageMvcModel
+            {
+                Entry = "src/entry-pages/admin.ts",
+                UseAntiforgery = true,
+                PageData = new
+                {
+                    Message = $"This initial message is from aspnet with slug {slug}"
+                }
+            };
+            return View("VuePage", model);
+        }
+
+        [HttpGet("error")]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            var model = new VitePageMvcModel
+            {
+                Entry = "src/entry-pages/admin.ts",
+                UseAntiforgery = true,
+                PageData = new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
             };
             return View("VuePage", model);
         }
