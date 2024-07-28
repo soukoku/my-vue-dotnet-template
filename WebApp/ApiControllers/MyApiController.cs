@@ -10,7 +10,7 @@ namespace WebApp.ApiControllers
         /// Randomly returns a 200 OK or a 500 Internal Server Error response.
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("")]
         [ProducesResponseType(typeof(MyApiResponse), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 500)]

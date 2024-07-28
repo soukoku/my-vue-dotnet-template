@@ -21,7 +21,16 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     0 !==
     child_process.spawnSync(
       'dotnet',
-      ['dev-certs', 'https', '--export-path', certFilePath, '--format', 'Pem', '--no-password', '--trust'],
+      [
+        'dev-certs',
+        'https',
+        '--export-path',
+        certFilePath,
+        '--format',
+        'Pem',
+        '--no-password',
+        '--trust'
+      ],
       { stdio: 'inherit' }
     ).status
   ) {
@@ -37,6 +46,7 @@ export default defineConfig({
       key: fs.readFileSync(keyFilePath),
       cert: fs.readFileSync(certFilePath)
     },
+    // keep the port number in sync with what's in Program.cs value
     port: 3000,
     hmr: { host: 'localhost', clientPort: 3000 }
   },
@@ -50,13 +60,18 @@ export default defineConfig({
     // outDir: '../app/',
     // emptyOutDir: true,
     rollupOptions: {
-      // specify all the custom entry pages
-      input: ['src/entry-pages/home.ts'],
+      // specify all the custom entry pages to be used
+      input: ['src/entry-pages/home.ts', 'src/entry-pages/admin.ts', 'src/entry-pages/error.ts'],
       output: {
         manualChunks: (id: string) => {
           if (id.includes('a-very-large-dependency')) {
             return 'big-chungus'
           }
+          if (id.includes('swagger') || id.includes('react')) {
+            return 'vendor-swagger'
+          }
+          if (id.includes('ag-grid-vue3') || id.includes('ag-grid-community'))
+            return 'vendor-ag-grid'
 
           if (id.includes('node_modules')) {
             return 'vendors'

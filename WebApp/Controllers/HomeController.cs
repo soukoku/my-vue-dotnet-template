@@ -5,6 +5,7 @@ using WebApp.Models;
 
 namespace WebApp.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
         private readonly ILogger<ClientUIController> _logger;

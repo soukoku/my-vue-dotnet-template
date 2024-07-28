@@ -77,7 +77,7 @@ namespace WebApp
 
                 app.UseSpa(spa =>
                 {
-                    // keep this port in sync with what's in ClientUI/vite.config.ts
+                    // keep this port in sync with what's in ClientUI/vite.config.ts value
                     spa.UseProxyToSpaDevelopmentServer("https://localhost:3000");
                 });
             }

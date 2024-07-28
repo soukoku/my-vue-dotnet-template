@@ -9,6 +9,7 @@ namespace WebApp.Controllers
     /// Controller for serving ClientUI. Each method should be for an entry page
     /// in ClientUI as different area of the app.
     /// </summary>
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ClientUIController : Controller
     {
         private readonly ILogger<ClientUIController> _logger;
@@ -18,8 +19,8 @@ namespace WebApp.Controllers
             _logger = logger;
         }
 
-        // park the entry page under the same-name root so it's easier to find them.
-        // you might have a landing page area, actual app area, admin area, etc.
+        // park the entry pages under this controller so it's easier to find them.
+        // you might have a landing page area, actual app area, admin area, docs, etc.
 
         [HttpGet("home/{**slug}")]
         public IActionResult Home(string? slug = null)
@@ -30,6 +31,7 @@ namespace WebApp.Controllers
                 UseAntiforgery = true,
                 PageData = new
                 {
+                    BaseUrl = Url.Content("~/"),
                     Message = $"This initial message is from aspnet with slug {slug}"
                 }
             };
@@ -46,7 +48,24 @@ namespace WebApp.Controllers
                 UseAntiforgery = true,
                 PageData = new
                 {
+                    BaseUrl = Url.Content("~/"),
                     Message = $"This initial message is from aspnet with slug {slug}"
+                }
+            };
+            return View("VuePage", model);
+        }
+
+
+        [HttpGet("docs/{**slug}")]
+        public IActionResult Docs(string? slug = null)
+        {
+            var model = new VitePageMvcModel
+            {
+                Entry = "src/entry-pages/docs.ts",
+                UseAntiforgery = true,
+                PageData = new
+                {
+                    BaseUrl = Url.Content("~/"),
                 }
             };
             return View("VuePage", model);
@@ -58,7 +77,7 @@ namespace WebApp.Controllers
         {
             var model = new VitePageMvcModel
             {
-                Entry = "src/entry-pages/admin.ts",
+                Entry = "src/entry-pages/error.ts",
                 UseAntiforgery = true,
                 PageData = new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
             };
