@@ -13,10 +13,10 @@ namespace WebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews()
-                .AddJsonOptions(op =>
-                {
-                    op.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-                });
+                      .AddJsonOptions(op =>
+                      {
+                          op.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+                      });
             builder.Services.AddSingleton<ViteBuildManifest>();
             builder.Services.AddAntiforgery(op =>
             {
@@ -52,12 +52,13 @@ namespace WebApp
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
+                app.UsePathBase("/template"); // TODO: remove if running in iis site root
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts(); // TODO: add if requires https
             }
 
-            app.UseHttpsRedirection(); // TODO: take this out if in ssl-terminating load balancer
+            //app.UseHttpsRedirection(); // TODO: add if not in ssl-terminating load balancer and requires https
             app.UseStaticFiles();
 
             app.UseRouting();

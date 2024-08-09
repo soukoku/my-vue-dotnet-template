@@ -23,7 +23,7 @@ namespace WebApp.ApiControllers
             }
             else
             {
-                return StatusCode(500, new ApiResponse { Error = "An error occurred" });
+                return StatusCode(500, new ApiResponse { Error = "An error occurred (fake)" });
             }
         }
     }

@@ -17,3 +17,12 @@ dotnet run --launch-profile https
 
 If it works you will be able to go to 
 [https://localhost:7082](https://localhost:7082) and see a working page.
+
+
+# Published Site Url
+
+The default published site is coded to use `/template` virtual path. This
+should be renamed (if different) or removed (if hosted at root).
+
+Update `Program.cs` file's `UsePathBase()` call and `vite.config.ts` file's
+`base` property to make the changes.

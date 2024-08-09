@@ -41,6 +41,7 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  base: process.env.NODE_ENV === 'development' ? '/' : '/template/',
   server: {
     https: {
       key: fs.readFileSync(keyFilePath),
@@ -61,13 +62,18 @@ export default defineConfig({
     // emptyOutDir: true,
     rollupOptions: {
       // specify all the custom entry pages to be used
-      input: ['src/entry-pages/home.ts', 'src/entry-pages/admin.ts', 'src/entry-pages/error.ts'],
+      input: [
+        'src/entry-pages/home.ts',
+        'src/entry-pages/admin.ts',
+        'src/entry-pages/docs.ts',
+        'src/entry-pages/error.ts'
+      ],
       output: {
         manualChunks: (id: string) => {
           if (id.includes('a-very-large-dependency')) {
             return 'big-chungus'
           }
-          if (id.includes('swagger') || id.includes('react')) {
+          if (id.includes('swagger')) {
             return 'vendor-swagger'
           }
           if (id.includes('ag-grid-vue3') || id.includes('ag-grid-community'))

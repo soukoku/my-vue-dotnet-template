@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Soukoku.AspNetCore.ViteIntegration" Version="1.0.0-alpha13" />
+    <PackageReference Include="Soukoku.AspNetCore.ViteIntegration" Version="1.0.0-alpha14" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.6.2" />
   </ItemGroup>
 

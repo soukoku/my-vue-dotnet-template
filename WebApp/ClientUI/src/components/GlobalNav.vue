@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import { getPageData } from '@/stores/pageData'
+
+const pageData = getPageData<{ baseUrl: string }>()
+
 const appAreas = [{
   text: 'Home',
-  href: '/home',
+  href: `${pageData.baseUrl}home`,
 }, {
   text: 'Admin',
-  href: '/admin',
+  href: `${pageData.baseUrl}admin`,
 }, {
   text: 'Docs',
-  href: '/docs',
+  href: `${pageData.baseUrl}docs`,
 }]
 
 function isCurrent(href: string) {
