@@ -31,7 +31,6 @@ namespace WebApp.Controllers
                 UseAntiforgery = true,
                 PageData = new
                 {
-                    BaseUrl = Url.Content("~/"),
                     Message = $"This initial message is from aspnet with slug {slug}"
                 }
             };
@@ -48,7 +47,6 @@ namespace WebApp.Controllers
                 UseAntiforgery = true,
                 PageData = new
                 {
-                    BaseUrl = Url.Content("~/"),
                     Message = $"This initial message is from aspnet with slug {slug}"
                 }
             };
@@ -65,7 +63,6 @@ namespace WebApp.Controllers
                 UseAntiforgery = true,
                 PageData = new
                 {
-                    BaseUrl = Url.Content("~/"),
                 }
             };
             return View("VuePage", model);

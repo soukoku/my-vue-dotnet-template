@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { getPageData } from '@/stores/pageData'
-
-const pageData = getPageData<{ baseUrl: string }>()
+const baseUrl = import.meta.env.BASE_URL
 
 const appAreas = [{
   text: 'Home',
-  href: `${pageData.baseUrl}home`,
+  href: `${baseUrl}home`,
 }, {
   text: 'Admin',
-  href: `${pageData.baseUrl}admin`,
+  href: `${baseUrl}admin`,
 }, {
   text: 'Docs',
-  href: `${pageData.baseUrl}docs`,
+  href: `${baseUrl}docs`,
 }]
 
 function isCurrent(href: string) {

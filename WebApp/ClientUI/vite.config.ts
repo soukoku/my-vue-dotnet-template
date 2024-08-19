@@ -15,8 +15,9 @@ const baseFolder =
 const certificateName = pkg.name || 'vueapp.client'
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`)
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`)
+const isDev = process.env.NODE_ENV === 'development'
 
-if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
+if (isDev && (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath))) {
   if (
     0 !==
     child_process.spawnSync(
@@ -41,12 +42,12 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: process.env.NODE_ENV === 'development' ? '/' : '/template/',
+  base: isDev ? '/' : '/template/',
   server: {
-    https: {
+    https: isDev ? {
       key: fs.readFileSync(keyFilePath),
       cert: fs.readFileSync(certFilePath)
-    },
+    } : undefined,
     // keep the port number in sync with what's in Program.cs value
     port: 3000,
     hmr: { host: 'localhost', clientPort: 3000 }

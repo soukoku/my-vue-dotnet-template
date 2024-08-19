@@ -1,14 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
-import { getPageData } from '@/stores/pageData'
 
-const pageData = getPageData<{ baseUrl: string }>()
+const baseUrl = import.meta.env.BASE_URL
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
 
-  history: createWebHistory(pageData.baseUrl + 'home'),
+  history: createWebHistory(baseUrl + 'home'),
   routes: [
     {
       path: '/',

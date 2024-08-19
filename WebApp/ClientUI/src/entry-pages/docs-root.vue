@@ -4,16 +4,14 @@ import 'swagger-ui/dist/swagger-ui.css'
 import SwaggerUI from 'swagger-ui'
 import { onMounted, ref } from 'vue'
 
-import { getPageData } from '@/stores/pageData'
-
-const pageData = getPageData<{ baseUrl: string }>()
+const baseUrl = import.meta.env.BASE_URL
 
 const swag = ref<HTMLElement>()
 
 onMounted(() => {
   // swagger = 
   SwaggerUI({
-    url: `${pageData.baseUrl}swagger/v1/swagger.json`,
+    url: `${baseUrl}swagger/v1/swagger.json`,
     domNode: swag.value,
     defaultModelsExpandDepth: 0,
     defaultModelExpandDepth: 3,

@@ -2,12 +2,13 @@
 import { getPageData } from '@/stores/pageData'
 import { ref } from 'vue'
 
-const pageData = getPageData<{ message: string, baseUrl: string }>()
+const pageData = getPageData<{ message: string }>()
+const baseUrl = import.meta.env.BASE_URL
 
 const apiResult = ref()
 
 async function testApi() {
-  const resp = await fetch(`${pageData.baseUrl}api/myapi`, { method: 'GET' })
+  const resp = await fetch(`${baseUrl}api/myapi`, { method: 'GET' })
   const data = await resp.json()
   apiResult.value = data
 }
