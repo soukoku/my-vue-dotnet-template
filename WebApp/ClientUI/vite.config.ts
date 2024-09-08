@@ -42,13 +42,13 @@ if (isDev && (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath))) {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: isDev ? '/' : '/template/',
+  base: '/template/',
   server: {
     https: isDev ? {
       key: fs.readFileSync(keyFilePath),
       cert: fs.readFileSync(certFilePath)
     } : undefined,
-    // keep the port number in sync with what's in Program.cs value
+    // keep the port number in sync with what's in DevSpaProxyController.cs value
     port: 3000,
     hmr: { host: 'localhost', clientPort: 3000 }
   },

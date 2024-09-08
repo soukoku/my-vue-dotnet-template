@@ -46,14 +46,15 @@ namespace WebApp
             });
 
             var app = builder.Build();
+            app.UsePathBase("/template"); // TODO: remove if running in iis site root (and remove from vite.config.ts)
+
             app.UseResponseCompression();
             app.UseSwagger();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UsePathBase("/template"); // TODO: remove if running in iis site root
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 //app.UseHsts(); // TODO: add if requires https
             }
@@ -65,30 +66,7 @@ namespace WebApp
 
             app.UseAuthorization();
 
-            if (app.Environment.IsDevelopment())
-            {
-#pragma warning disable ASP0014 // using endpoints is required so controller route match overrides spa during dev
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllerRoute(
-                        name: "default",
-                        pattern: "{controller=Home}/{action=Index}/{id?}");
-                });
-#pragma warning restore ASP0014 // Suggest using top level route registrations
-
-                app.UseSpa(spa =>
-                {
-                    // keep this port in sync with what's in ClientUI/vite.config.ts value
-                    spa.UseProxyToSpaDevelopmentServer("https://localhost:3000");
-                });
-            }
-            else
-            {
-                app.MapControllerRoute(
-                  name: "default",
-                  pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            }
+            app.MapDefaultControllerRoute();
 
             app.Run();
         }
