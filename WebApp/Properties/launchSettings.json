@@ -18,6 +18,10 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7082"
     },
+    "IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
@@ -30,8 +34,12 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost.docufree.com/template",
+      "sslPort": 443
+    },
     "iisExpress": {
-      "applicationUrl": "http://localhost:55787",
+      "applicationUrl": "http://localhost:55787/template",
       "sslPort": 44317
     }
   }
