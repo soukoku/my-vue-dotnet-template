@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.ResponseCompression;
-using Soukoku.AspNetCore.ViteIntegration;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -17,7 +16,7 @@ namespace WebApp
                       {
                           op.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
                       });
-            builder.Services.AddSingleton<ViteBuildManifest>();
+            builder.Services.AddViteManifest("https://localhost:3000/template/");
             builder.Services.AddAntiforgery(op =>
             {
                 // enable this if need to be hosted in external iframes
